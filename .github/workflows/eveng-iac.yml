@@ -28,6 +28,7 @@ jobs:
 
   terraform:
     name: Terraform
+    needs: yaml-lint
     runs-on: ubuntu-latest
 
     env:
@@ -35,9 +36,10 @@ jobs:
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      WORK_DIR: "eveng-tf-infra-azure"
 
     steps:
-      - name: Checkout Code
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
       - name: Set up Terraform
@@ -45,24 +47,22 @@ jobs:
         with:
           terraform_version: 1.9.8
 
-      # - name: Authenticate to Azure
-      #   uses: azure/login@v2
-      #   with:
-      #     creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      # - name: Azure CLI script
-      #   uses: azure/cli@v2
-      #   with:
-      #     azcliversion: latest
-      #     inlineScript: |
-      #       az account show
-
       - name: Terraform Init
         run: |
-          cd eveng-tf-infra-azure
+          cd $(WORK_DIR)
           terraform init
 
-      - name: Terraform format
+      - name: Terraform Format
         run: |
-          cd eveng-tf-infra-azure
+          cd $(WORK_DIR)
           terraform fmt -check
+
+      - name: Terraform Validate
+        run: |
+          cd $(WORK_DIR)
+          terraform validate
+
+      - name: Terraform Plan
+        run: |
+          cd $(WORK_DIR)
+          terraform plan
