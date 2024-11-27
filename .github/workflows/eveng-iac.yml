@@ -1,10 +1,10 @@
 name: Validate YAML
 
 on:
-  # push:
-  #   paths:
-  #     - '**/*.yaml'
-  #     - '**/*.yml'
+  push:
+    paths:
+      - '**/*.yaml'
+      - '**/*.yml'
   pull_request:
     paths:
       - '**/*.yaml'
