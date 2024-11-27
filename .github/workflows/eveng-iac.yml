@@ -3,13 +3,13 @@ name: EVE-NG IaC
 
 on:
   push:
-    paths:
-      - '**/*.yaml'
-      - '**/*.yml'
-  pull_request:
-    paths:
-      - '**/*.yaml'
-      - '**/*.yml'
+  #   paths:
+  #     - '**/*.yaml'
+  #     - '**/*.yml'
+  # pull_request:
+  #   paths:
+  #     - '**/*.yaml'
+  #     - '**/*.yml'
 
 jobs:
   yaml-lint:
