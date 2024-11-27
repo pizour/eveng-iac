@@ -1,4 +1,5 @@
-name: Validate YAML
+---
+name: EVE-NG IaC
 
 on:
   push:
