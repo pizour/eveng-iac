@@ -59,4 +59,4 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan
+        run: terraform plan -var="eveng_infra_iac_path=../eveng_infra_azure.yml"

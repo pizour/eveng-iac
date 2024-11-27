@@ -3,7 +3,7 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "example" {
-  name     = var.resource_group_name
+  name     = local.eveng_iac["infra"]["rg"]
   location = var.location
 }
 
