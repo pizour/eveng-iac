@@ -6,7 +6,6 @@ variable "resource_group_name" {
 variable "location" {
   type        = string
   description = "Location for Virtual Network"
-  default     = "swedencentral"
 }
 
 variable "vnet_name" {
