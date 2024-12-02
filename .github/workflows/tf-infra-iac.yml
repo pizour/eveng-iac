@@ -84,7 +84,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ github.run_id }}
-          path: $./{{ github.run_id }}.tfplan
+          path: ./${{ github.run_id }}.tfplan
 
   terraform-apply:
     name: Terraform Apply
