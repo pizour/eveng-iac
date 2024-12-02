@@ -18,7 +18,7 @@ module "networking" {
 
 module "compute" {
   source   = "./modules/tf-mod-compute/"
-  for_each = { for vm in local.iac["infra"]["vms"] : vm.name => vm }
+  for_each = { for vm in local.iac["infra"]["vms"] : vm.vm_name => vm }
 
   vm_name             = each.value.vm_name
   vm_size             = each.value.vm_size

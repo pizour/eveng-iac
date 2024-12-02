@@ -12,6 +12,6 @@ infra:
     - vm_name: "eveng-vm"
       vnet_name: "eveng-vnet"
       subnet_name: "eveng-snet"
-      vm_size:
+      vm_size: "B2s"
       ssh_username: admin
       ssh_pubkey: "chua"
