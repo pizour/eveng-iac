@@ -15,3 +15,17 @@ module "networking" {
   resource_group_name = local.iac["infra"]["rg"]
   location            = local.iac["infra"]["azure_location"]
 }
+
+module "compute" {
+  source   = "./modules/tf-mod-compute/"
+  for_each = { for vm in local.iac["infra"]["vms"] : vm.name => vm }
+
+  vm_name             = each.value.vm_name
+  vm_size             = each.value.vm_size
+  vnet_name           = each.value.vnet_name
+  subnet_name         = each.value.subnet_name
+  ssh_username        = each.value.ssh_username
+  ssh_pubkey          = each.value.ssh_pubkey
+  resource_group_name = local.iac["infra"]["rg"]
+  location            = local.iac["infra"]["azure_location"]
+}

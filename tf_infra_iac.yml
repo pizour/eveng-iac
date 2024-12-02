@@ -8,3 +8,10 @@ infra:
       subnets:
         - name: "eveng-snet"
           net: "10.0.0.0/24"
+  vms:
+    - vm_name: "eveng-vm"
+      vnet_name: "eveng-vnet"
+      subnet_name: "eveng-snet"
+      vm_size:
+      ssh_username: admin
+      ssh_pubkey: "chua"
