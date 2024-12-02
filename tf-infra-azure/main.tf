@@ -28,4 +28,7 @@ module "compute" {
   ssh_pubkey          = each.value.ssh_pubkey
   resource_group_name = local.iac["infra"]["rg"]
   location            = local.iac["infra"]["azure_location"]
+  depends_on = [
+    module.networking
+  ]
 }
