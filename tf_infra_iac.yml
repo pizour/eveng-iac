@@ -13,6 +13,6 @@ infra:
     - vm_name: "eveng-vm"
       vnet_name: "eveng-vnet"
       subnet_name: "eveng-snet"
-      vm_size: "B2s"
+      vm_size: "Standard_B2s"
       ssh_username: eveng
       ssh_pubkey: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCxLuv4UDBswDfGtY0BWV30WksakqwKBCIMEa6v5LwPyaA3pvwoy0j6nfqEbEWrh4xcH5U9rsEr+FUj8dPGc/BBvfvcgO41dCqrFXa/nIZ/7oJXJIJ3aJeT26V1Co4DOASXuZJKAWnHA8h6TXiD4FMiTG9ov8MPi53Q+UxM792cElgltpBRRKYchb7iLPi8qhpwrqYnuGzQTA/2dWzlFfWmP+YIAxVubMScCBh0iNzNTOfqZN2sZu4KJKBR7Xfn436fuPiVshrJaMpT9T8vOlLolIgglNxf3Q5tePP26LM67iz/t53w7VvRwBxjm9NbCbAbM44CQ0lYKfpNumr9uNP1ORVTfNRDQ94uIp3zkoMkVfhG6tnuxm8WiIFGmDYzoSLsiYnSra9BouNByQgz+YL5BbfIvUKOt0kAX/YmHxKQls79oGiYYrd7cpuDwQe618RQsyHax8BJqoL0G7KVUqxCX7JSmUfHwPvgTuPyny/2mmOd6bBZXBJaWK1CqP9LAec="
