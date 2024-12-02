@@ -3,6 +3,7 @@ resource "azurerm_public_ip" "public_ip" {
   resource_group_name = var.resource_group_name
   location            = var.location
   allocation_method   = "Dynamic"
+  #domain_name_label   = "example-vm" # This will be the FQDN, example-vm.<region>.cloudapp.azure.com
 }
 
 resource "azurerm_network_security_group" "network_security_group" {
@@ -49,9 +50,9 @@ resource "azurerm_linux_virtual_machine" "virtual_machine" {
   size                  = var.vm_size
 
   os_disk {
-    name                 = "myOsDisk"
-    caching              = "ReadWrite"
-    storage_account_type = "Premium_LRS"
+    name                 = "${var.vm_name}-osdisk"
+    caching              = "None"
+    storage_account_type = "Standard_LRS"
   }
 
   source_image_reference {

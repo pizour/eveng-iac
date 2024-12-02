@@ -6,7 +6,7 @@
     "properties": {
       "infra": {
         "type": "object",
-        "required": ["rg", "azure_location", "networks"],
+        "required": ["rg", "azure_location", "networks", "vms"],
         "additionalProperties": false,
         "properties": {
           "rg": {
@@ -91,6 +91,34 @@
                   },
                   "required": ["name", "net", "subnets"],
                   "additionalProperties": false
+                }
+              },
+              "vms": {
+                "type": "array",
+                "required": ["vm_name", "vnet_name", "subnet_name", "vm_size", "ssh_username", "ssh_pubkey"],
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "vm_name": {
+                      "type": "string"
+                    },
+                    "vnet_name": {
+                      "type": "string"
+                    },
+                    "subnet_name": {
+                      "type": "string"
+                    },
+                    "vm_size": {
+                      "type": "string"
+                    },
+                    "ssh_username": {
+                      "type": "string"
+                    },
+                    "ssh_pubkey": {
+                      "type": "string",
+                      "pattern": "^ssh-rsa [A-Za-z0-9+/=]+$"
+                    }
+                  }
                 }
               }
       }

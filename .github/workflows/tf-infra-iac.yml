@@ -12,40 +12,42 @@ on:
   #     - '**/*.yml'
 
 jobs:
-  # yaml-lint:
-  #   name: Lint YAML Files
-  #   runs-on: ubuntu-latest
+  yaml-lint:
+    name: Lint YAML Files
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - name: Checkout Repository
-  #       uses: actions/checkout@v3
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-  #     - name: Install yamllint
-  #       run: sudo apt-get install -y yamllint
+      - name: Install yamllint
+        run: sudo apt-get install -y yamllint
 
-  #     - name: Run yamllint
-  #       run: yamllint .
+      - name: Run yamllint
+        run: yamllint .
 
-  # tf-schema-validation:
-  #   name: Validate Terraform IaC YAML schema
-  #   runs-on: ubuntu-latest
+  tf-schema-validation:
+    name: Validate Terraform IaC YAML schema
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - name: Checkout Repository
-  #       uses: actions/checkout@v3
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-  #     - name: Install npm
-  #       run: sudo apt-get install -y npm
+      - name: Install npm
+        run: sudo apt-get install -y npm
 
-  #     - name: Install ajv-cli
-  #       run: sudo npm install -g ajv-cli
+      - name: Install ajv-cli
+        run: sudo npm install -g ajv-cli
 
-  #     - name: Validate TF IaC YAML
-  #       run: ajv validate -s json_schema/tf_infra_schema.json -d tf_infra_iac.yml
+      - name: Validate TF IaC YAML
+        run: ajv validate -s json_schema/tf_infra_schema.json -d tf_infra_iac.yml
 
   terraform:
     name: Terraform
-    #needs: yaml-lint
+    needs:
+      - yaml-lint
+      - tf-schema-validation
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -76,4 +78,7 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan -var="iac_path=../tf_infra_iac.yml"
+        run: terraform plan -var="iac_path=../tf_infra_iac.yml" -out=${{ github.run_id }}.tfplan
+
+      - name: Terraform Apply
+        run: terraform apply ${{ github.run_id }}.tfplan
