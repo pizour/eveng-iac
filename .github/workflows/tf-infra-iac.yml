@@ -130,7 +130,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ${{ github.run_id }}
-          path: ./tf-infra-azure/${{ github.run_id }}.tfplan
+          path: ./tf-infra-azure
 
       - name: Terraform Init
         run: terraform init
