@@ -1,5 +1,5 @@
 ---
-name: EVE-NG IaC
+name: IaC
 
 on:
   push:
@@ -26,13 +26,30 @@ jobs:
       - name: Run yamllint
         run: yamllint .
 
+  tf-schema-validation:
+    name: Validate Terraform IaC YAML schema
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install npm
+        run: sudo apt-get install -y npm
+
+      - name: Install ajv-cli
+        run: sudo npm install -g ajv-cli
+
+      - name: Validate TF IaC YAML
+        run: ajv validate -s json_schema/tf_infra_schema.json -d tf_infra_iac.yml
+
   terraform:
     name: Terraform
-    needs: yaml-lint
+    #needs: yaml-lint
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: "eveng-tf-infra-azure"
+        working-directory: "tf-infra-azure"
 
     env:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
@@ -59,4 +76,4 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan -var="eveng_infra_iac_path=../eveng_infra_azure.yml"
+        run: terraform plan -var="iac_path=../tf_infra_azure.yml"

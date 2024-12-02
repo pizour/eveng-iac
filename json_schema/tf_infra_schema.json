@@ -1,0 +1,103 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "infra": {
+        "type": "object",
+        "properties": {
+          "rg": {
+            "type": "string",
+            "pattern": ".*-rg$"
+          },
+          "azure_location": {
+            "type": "string",
+            "enum": [
+              "eastus",
+              "eastus2",
+              "westus",
+              "westus2",
+              "centralus",
+              "northcentralus",
+              "southcentralus",
+              "northeurope",
+              "westeurope",
+              "southeastasia",
+              "eastasia",
+              "australiaeast",
+              "australiasoutheast",
+              "japaneast",
+              "japanwest",
+              "koreacentral",
+              "koreasouth",
+              "canadacentral",
+              "canadaeast",
+              "brazilsouth",
+              "brazilsoutheast",
+              "southafricanorth",
+              "southafricawest",
+              "uaecentral",
+              "uaenorth",
+              "indiawest",
+              "indiacentral",
+              "indiasouth",
+              "ukwest",
+              "uksouth",
+              "switzerlandnorth",
+              "switzerlandwest",
+              "germanywestcentral",
+              "germanynorth",
+              "norwayeast",
+              "norwaywest",
+              "francecentral",
+              "francesouth",
+              "italycentral",
+              "italysouth",
+              "polandcentral"
+            ]
+          },
+          "networks": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "pattern": ".*-vnet$"
+                    },
+                    "net": {
+                      "type": "string",
+                      "format": "ipv4-cidr"
+                    },
+                    "subnets": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "pattern": ".*-snet$"
+                          },
+                          "net": {
+                            "type": "string",
+                            "format": "ipv4-cidr"
+                          }
+                        },
+                        "required": ["name", "net"],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": ["name", "net", "subnets"],
+                  "additionalProperties": false
+                }
+              },
+        "required": ["rg", "azure_location", "networks"],
+        "additionalProperties": false
+      }
+    },
+    "required": ["infra"],
+    "additionalProperties": false
+  }
+
+}
+  

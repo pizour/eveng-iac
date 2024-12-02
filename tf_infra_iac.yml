@@ -1,0 +1,10 @@
+---
+infra:
+  rg: "eveng-rg"
+  azure_location: "eastus"
+  networks:
+    - name: "eveng-vnet"
+      net: "10.0.0.0/16"
+      subnets:
+        - name: "eveng-snet"
+          net: "10.0.0.0/24"
