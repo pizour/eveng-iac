@@ -20,9 +20,9 @@ variable "address_space" {
 }
 
 variable "subnets" {
-  type = list[object({
+  type = list(object({
     name = string
     net  = string
-  })]
+  }))
   description = "Address space for Virtual Subnet"
 }
