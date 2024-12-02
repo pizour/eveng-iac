@@ -81,7 +81,7 @@ jobs:
           export INFRA_ENABLED=$(yq '.infra_enabled' ../tf_infra_iac.yml)
 
       - name: test
-        run: echo $INFRA_ENABLED
+        run: echo ${{ env.INFRA_ENABLED }}
 
       - name: Terraform Init
         run: terraform init
