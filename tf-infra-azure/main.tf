@@ -26,6 +26,7 @@ module "compute" {
   subnet_name         = each.value.subnet_name
   ssh_username        = each.value.ssh_username
   ssh_pubkey          = each.value.ssh_pubkey
+  unique_vm_alias     = each.value.unique_vm_alias
   resource_group_name = local.iac["infra"]["rg"]
   location            = local.iac["infra"]["azure_location"]
   depends_on = [
