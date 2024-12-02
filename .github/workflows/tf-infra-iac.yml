@@ -77,11 +77,13 @@ jobs:
 
       - name: Read YAML File
         id: read_yaml
-        run: |
-          export INFRA_ENABLED=$(yq '.infra_enabled' ../tf_infra_iac.yml)
+        run: echo "INFRA_ENABLED=$(yq '.infra_enabled' ../tf_infra_iac.yml)" >> $GITHUB_ENV
 
       - name: test
-        run: echo ${{ env.INFRA_ENABLED }}
+        run: echo $INFRA_ENABLED
+
+      - name: test2
+        run: echo "${{ env.INFRA_ENABLED }}"
 
       - name: Terraform Init
         run: terraform init
