@@ -79,12 +79,6 @@ jobs:
         id: read_yaml
         run: echo "INFRA_ENABLED=$(yq '.infra_enabled' ../tf_infra_iac.yml)" >> $GITHUB_ENV
 
-      - name: test
-        run: echo $INFRA_ENABLED
-
-      - name: test2
-        run: echo "${{ env.INFRA_ENABLED }}"
-
       - name: Terraform Init
         run: terraform init
 
@@ -95,7 +89,12 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan -var="iac_path=../tf_infra_iac.yml" -out=${{ github.run_id }}.tfplan
+        run: |
+          DESTROY_FLAG=""
+          if [ "${{ env.INFRA_ENABLED }}" = "false" ]; then
+            DESTROY_FLAG="-destroy"
+          fi
+          terraform plan $DESTROY_FLAG -var="iac_path=../tf_infra_iac.yml" -out=${{ github.run_id }}.tfplan
 
       - name: Upload tfplan as artifact
         uses: actions/upload-artifact@v4
