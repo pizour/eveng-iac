@@ -134,5 +134,5 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
-      # - name: Terraform Apply
-      #   run: terraform apply ${{ github.run_id }}.tfplan
+      - name: Terraform Apply
+        run: terraform apply ${{ github.run_id }}.tfplan
