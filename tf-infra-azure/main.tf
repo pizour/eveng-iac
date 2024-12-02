@@ -9,9 +9,9 @@ module "networking" {
   source   = "./modules/tf-mod-networking/"
   for_each = local.iac["infra"]["networks"]
 
-  vnet_name           = vnet.name
-  address_space       = vnet.address_space
-  subnets             = vnet.subnets
+  vnet_name           = each.value.name
+  address_space       = each.value.address_space
+  subnets             = each.value.subnets
   resource_group_name = local.iac["infra"]["rg"]
   location            = local.iac["infra"]["azure_location"]
 }
