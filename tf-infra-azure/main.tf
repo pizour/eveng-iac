@@ -7,7 +7,7 @@ module "shared_infra" {
 
 module "networking" {
   source   = "./modules/tf-mod-networking/"
-  for_each = local.iac["infra"]["networks"]
+  for_each = { for vnet in local.iac["infra"]["networks"] : vnet.name => vnet }
 
   vnet_name           = each.value.name
   address_space       = each.value.address_space
