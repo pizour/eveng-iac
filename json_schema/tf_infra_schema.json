@@ -98,11 +98,14 @@
               },
               "vms": {
                 "type": "array",
-                "required": ["vm_name", "vnet_name", "subnet_name", "vm_size", "ssh_username", "ssh_pubkey"],
+                "required": ["vm_name", "vnet_name", "subnet_name", "vm_size", "ssh_username", "ssh_pubkey", "unique_vm_alias"],
                 "items": {
                   "type": "object",
                   "properties": {
                     "vm_name": {
+                      "type": "string"
+                    },
+                    "unique_vm_alias": {
                       "type": "string"
                     },
                     "vnet_name": {

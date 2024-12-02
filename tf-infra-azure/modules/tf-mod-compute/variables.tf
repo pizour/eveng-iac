@@ -37,3 +37,8 @@ variable "ssh_pubkey" {
   type        = string
   description = "VM SSH public key"
 }
+
+variable "unique_vm_alias" {
+  type        = string
+  description = "Unique DNS to access VM"
+}
