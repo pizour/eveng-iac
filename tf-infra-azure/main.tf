@@ -1,12 +1,12 @@
 module "shared_infra" {
-  source = "modules/tf-mod-general/"
+  source = "./modules/tf-mod-general/"
 
   resource_group_name = local.iac["infra"]["rg"]
   location            = local.iac["infra"]["azure_location"]
 }
 
 module "networking" {
-  source   = "modules/tf-mod-networking/"
+  source   = "./modules/tf-mod-networking/"
   for_each = vnet in local.iac["infra"]["networks"]
 
   vnet_name = vnet.name
