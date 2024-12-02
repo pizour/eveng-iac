@@ -1,9 +1,13 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
+    "required": ["infra"],
+    "additionalProperties": false,
     "properties": {
       "infra": {
         "type": "object",
+        "required": ["rg", "azure_location", "networks"],
+        "additionalProperties": false,
         "properties": {
           "rg": {
             "type": "string",
@@ -65,8 +69,7 @@
                       "pattern": ".*-vnet$"
                     },
                     "net": {
-                      "type": "string",
-                      "format": "ipv4-cidr"
+                      "type": "string"
                     },
                     "subnets": {
                       "type": "array",
@@ -78,8 +81,7 @@
                             "pattern": ".*-snet$"
                           },
                           "net": {
-                            "type": "string",
-                            "format": "ipv4-cidr"
+                            "type": "string"
                           }
                         },
                         "required": ["name", "net"],
@@ -90,13 +92,9 @@
                   "required": ["name", "net", "subnets"],
                   "additionalProperties": false
                 }
-              },
-        "required": ["rg", "azure_location", "networks"],
-        "additionalProperties": false
+              }
       }
-    },
-    "required": ["infra"],
-    "additionalProperties": false
+    }
   }
 
 }
