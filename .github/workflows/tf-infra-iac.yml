@@ -76,4 +76,4 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan -var="iac_path=../tf_infra_azure.yml"
+        run: terraform plan -var="iac_path=../tf_infra_iac.yml"
