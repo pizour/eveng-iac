@@ -12,6 +12,7 @@ on:
   #     - '**/*.yml'
 
 jobs:
+
   yaml-lint:
     name: Lint YAML Files
     runs-on: ubuntu-latest
@@ -80,7 +81,7 @@ jobs:
       - name: Terraform Plan
         run: terraform plan -var="iac_path=../tf_infra_iac.yml" -out=${{ github.run_id }}.tfplan
 
-      - name: Upload build output as artifact
+      - name: Upload tfplan as artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ github.run_id }}
@@ -110,13 +111,21 @@ jobs:
         with:
           terraform_version: 1.9.8
 
-      - name: Download tfplan
+      - name: Download tfplan from artifacts
         uses: actions/download-artifact@v4
         with:
           name: ${{ github.run_id }}
 
+      - name: Load environment from YAML
+        uses: doughepi/yaml-env-action
+        with:
+          files: tf_infra_iac.yml
+
+      - name: test
+        run: echo ${{ env.INFRA_ENABLED }}
+
       - name: Terraform Init
         run: terraform init
 
-      - name: Terraform Apply
-        run: terraform apply ${{ github.run_id }}.tfplan
+      # - name: Terraform Apply
+      #   run: terraform apply ${{ github.run_id }}.tfplan
