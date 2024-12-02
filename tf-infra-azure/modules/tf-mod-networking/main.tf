@@ -1,6 +1,6 @@
 resource "azurerm_virtual_network" "virtual_network" {
   name                = var.vnet_name
-  address_space       = var.address_space
+  address_space       = [var.address_space]
   location            = var.resource_group_name
   resource_group_name = var.location
 }
@@ -11,7 +11,7 @@ resource "azurerm_subnet" "subnet" {
   name                 = each.value.name
   resource_group_name  = var.resource_group_name
   virtual_network_name = azurerm_virtual_network.virtual_network.name
-  address_prefixes     = each.value.net
+  address_prefixes     = [each.value.net]
 }
 
 # resource "azurerm_public_ip" "eveng-pip" {
