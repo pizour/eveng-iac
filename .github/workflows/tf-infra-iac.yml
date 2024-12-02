@@ -69,6 +69,20 @@ jobs:
         with:
           terraform_version: 1.9.8
 
+      - name: Install yq
+        run: |
+          sudo apt install -y wget
+          wget https://github.com/mikefarah/yq/releases/download/v4.35.1/yq_linux_amd64 -O /usr/local/bin/yq
+          chmod +x /usr/local/bin/yq
+
+      - name: Read YAML File
+        id: read_yaml
+        run: |
+          export INFRA_ENABLED=$(yq '.infra_enabled' ../tf_infra_iac.yml)
+
+      - name: test
+        run: echo $INFRA_ENABLED
+
       - name: Terraform Init
         run: terraform init
 
@@ -115,14 +129,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ${{ github.run_id }}
-
-      - name: Load environment from YAML
-        uses: doughepi/yaml-env-action
-        with:
-          files: tf_infra_iac.yml
-
-      - name: test
-        run: echo ${{ env.INFRA_ENABLED }}
 
       - name: Terraform Init
         run: terraform init
