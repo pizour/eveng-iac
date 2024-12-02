@@ -6,12 +6,12 @@ resource "azurerm_virtual_network" "virtual_network" {
 }
 
 resource "azurerm_subnet" "subnet" {
-  for_each = subnet in var.subnets
+  for_each = { for subnet in var.subnets : subnet.name => subnet }
 
-  name                 = subnet.name
+  name                 = each.value.name
   resource_group_name  = var.resource_group_name
   virtual_network_name = azurerm_virtual_network.virtual_network.name
-  address_prefixes     = [subnet.net]
+  address_prefixes     = [each.value.net]
 }
 
 # resource "azurerm_public_ip" "eveng-pip" {
