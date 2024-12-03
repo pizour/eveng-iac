@@ -5,5 +5,94 @@
   become: true
 
   tasks:
-    - name: Show local dns
-      ansible.builtin.command: cat /etc/hosts
+
+    # - name: Check if /dev/sdc exists
+    #   ansible.builtin.stat:
+    #     path: /dev/sdc
+    #   register: sdc_check
+
+    # - name: Create a new partition on /dev/sdc
+    #   ansible.builtin.command: echo -e "o\nn\np\n1\n\n\nw" | fdisk /dev/sdc
+    #   #when: sdc_check.stat.exists
+
+    - name: Create a new partition on /dev/sdc
+      community.general.parted:
+        device: /dev/sdc
+        number: 1
+        state: present
+
+    # - name: Format the partition
+    #   ansible.builtin.command: mke2fs -F /dev/sdc1
+    #   when: sdc_check.stat.exists
+
+    - name: Format the partition
+      community.general.filesystem:
+        fstype: ext4
+        dev: /dev/sdc1
+
+    - name: Add the new partition to /etc/fstab
+      ansible.builtin.lineinfile:
+        path: /etc/fstab
+        line: "/dev/sdc1    /opt    ext4    defaults,discard    0 0"
+
+    - name: Mount the partition
+      community.general.mount:
+        path: /opt
+        src: /dev/sdc1
+        fstype: ext4
+        state: mounted
+
+    # - name: Enable PermitRootLogin in SSH
+    #   lineinfile:
+    #     path: /etc/ssh/sshd_config
+    #     regexp: "^#?PermitRootLogin"
+    #     line: "PermitRootLogin yes"
+    #     backup: yes
+
+    - name: Download and add EVE-NG repository key
+      get_url:
+        url: http://www.eve-ng.net/focal/eczema@ecze.com.gpg.key
+        dest: /tmp/eve-ng.key
+      register: eve_key
+
+    - name: Add the EVE-NG repository key
+      command: apt-key add /tmp/eve-ng.key
+      when: eve_key is succeeded
+
+    - name: Add EVE-NG repository to apt sources
+      copy:
+        dest: /etc/apt/sources.list.d/eve-ng.list
+        content: "deb [arch=amd64] http://www.eve-ng.net/jammy jammy main"
+
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install EVE-NG
+      apt:
+        name: eve-ng
+        state: latest
+        update_cache: yes
+        debconf:
+          DEBIAN_FRONTEND: noninteractive
+
+    - name: Restart MySQL
+      service:
+        name: mysql
+        state: restarted
+
+    - name: Kernel tuning for Azure VMs
+      when: azure_check.rc == 0
+      block:
+        - name: Add KVM options for nested virtualization
+          copy:
+            dest: /etc/modprobe.d/qemu-system-x86.conf
+            content: "options kvm_intel nested=1 vmentry_l1d_flush=never"
+
+        # - name: Enable password authentication in SSH
+        #   lineinfile:
+        #     path: /etc/ssh/sshd_config
+        #     regexp: "^#?PasswordAuthentication"
+        #     line: "PasswordAuthentication yes"
+        #     backup: yes
+
