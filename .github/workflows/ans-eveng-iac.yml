@@ -63,4 +63,6 @@ jobs:
         run: sudo apt install -y ansible
 
       - name: Install EVE-NG Ansible playbook
-        run: ansible-playbook -i ./inventory/dynamic_iac_inventory.py install-eveng.yml
+        run: |
+          chmod +x ./inventory/dynamic_iac_inventory.py
+          ansible-playbook -i ./inventory/dynamic_iac_inventory.py install-eveng.yml

@@ -5,7 +5,7 @@ import json
 
 def load_yaml_inventory():
     # Open the YAML file that contains your inventory
-    with open('../../tf_infra_iac.yml', 'r') as file:
+    with open('../tf_infra_iac.yml', 'r') as file:
         inventory_data = yaml.safe_load(file)
     
     return inventory_data
