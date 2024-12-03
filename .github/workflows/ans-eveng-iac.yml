@@ -59,8 +59,15 @@ jobs:
         with:
           python-version: '3.x'
 
+      - name: Install PyYAML
+        run: |
+          pip install pyyaml
+          python -m pip show pyyaml
+
       - name: Install Ansible
-        run: sudo apt install -y ansible
+        run: |
+          sudo apt install -y ansible
+          ansible --version
 
       - name: Install EVE-NG Ansible playbook
         run: |
