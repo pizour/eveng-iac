@@ -36,7 +36,7 @@
         line: "/dev/sdc1    /opt    ext4    defaults,discard    0 0"
 
     - name: Mount the partition
-      community.general.mount:
+      ansible.posix.mount:
         path: /opt
         src: /dev/sdc1
         fstype: ext4
