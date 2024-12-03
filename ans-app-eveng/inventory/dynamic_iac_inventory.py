@@ -20,7 +20,7 @@ def main():
         alias = f'{vm.get("unique_vm_alias")}.{inventory["infra"]["azure_location"]}.cloudapp.azure.com'
         hosts[alias] = {
             'vm_name': vm.get("vm_name"),
-            'ssh_username': vm.get("ssh_username"),
+            'ansible_user': vm.get("ssh_username"),
             'ssh_pubkey': vm.get("ssh_pubkey")
         }
 

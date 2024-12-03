@@ -59,6 +59,11 @@ jobs:
         with:
           python-version: '3.x'
 
+      - name: Set up SSH
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
+          chmod 600 private_key.pem
+
       - name: Install PyYAML
         run: |
           pip install pyyaml
@@ -70,6 +75,8 @@ jobs:
           ansible --version
 
       - name: Install EVE-NG Ansible playbook
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: False
         run: |
           chmod +x ./inventory/dynamic_iac_inventory.py
-          ansible-playbook -i ./inventory/dynamic_iac_inventory.py install-eveng.yml
+          ansible-playbook --inventory ./inventory/dynamic_iac_inventory.py --private-key private_key.pem install-eveng.yml
