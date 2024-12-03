@@ -5,6 +5,5 @@
   become: true
 
   tasks:
-    - name: Debug
-      ansible.builtin.debug:
-        msg: "chua"
+    - name: Show local dns
+      ansible.builtin.command: cat /etc/hosts
