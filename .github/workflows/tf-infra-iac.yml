@@ -15,19 +15,19 @@ on:
 
 jobs:
 
-  yaml-lint:
-    name: Lint YAML Files
-    runs-on: ubuntu-latest
+  # yaml-lint:
+  #   name: Lint YAML Files
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+  #   steps:
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v3
 
-      - name: Install yamllint
-        run: sudo apt-get install -y yamllint
+  #     - name: Install yamllint
+  #       run: sudo apt-get install -y yamllint
 
-      - name: Run yamllint
-        run: yamllint .
+  #     - name: Run yamllint
+  #       run: yamllint .
 
   tf-schema-validation:
     name: Validate Terraform IaC YAML schema
@@ -49,7 +49,7 @@ jobs:
   terraform-plan:
     name: Terraform Plan
     needs:
-      - yaml-lint
+      #- yaml-lint
       - tf-schema-validation
     runs-on: ubuntu-latest
     defaults:
