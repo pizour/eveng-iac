@@ -82,7 +82,7 @@
         state: restarted
 
     - name: Kernel tuning for Azure VMs
-      when: azure_check.rc == 0
+      #when: azure_check.rc == 0
       block:
         - name: Add KVM options for nested virtualization
           copy:
