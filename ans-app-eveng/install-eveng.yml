@@ -6,24 +6,11 @@
 
   tasks:
 
-    # - name: Check if /dev/sdc exists
-    #   ansible.builtin.stat:
-    #     path: /dev/sdc
-    #   register: sdc_check
-
-    # - name: Create a new partition on /dev/sdc
-    #   ansible.builtin.command: echo -e "o\nn\np\n1\n\n\nw" | fdisk /dev/sdc
-    #   #when: sdc_check.stat.exists
-
     - name: Create a new partition on /dev/sdc
       community.general.parted:
         device: /dev/sdc
         number: 1
         state: present
-
-    # - name: Format the partition
-    #   ansible.builtin.command: mke2fs -F /dev/sdc1
-    #   when: sdc_check.stat.exists
 
     - name: Format the partition
       community.general.filesystem:
@@ -41,13 +28,6 @@
         src: /dev/sdc1
         fstype: ext4
         state: mounted
-
-    # - name: Enable PermitRootLogin in SSH
-    #   lineinfile:
-    #     path: /etc/ssh/sshd_config
-    #     regexp: "^#?PermitRootLogin"
-    #     line: "PermitRootLogin yes"
-    #     backup: yes
 
     - name: Download and add EVE-NG repository key
       get_url:
@@ -82,17 +62,8 @@
         state: restarted
 
     - name: Kernel tuning for Azure VMs
-      #when: azure_check.rc == 0
       block:
         - name: Add KVM options for nested virtualization
           copy:
             dest: /etc/modprobe.d/qemu-system-x86.conf
             content: "options kvm_intel nested=1 vmentry_l1d_flush=never"
-
-        # - name: Enable password authentication in SSH
-        #   lineinfile:
-        #     path: /etc/ssh/sshd_config
-        #     regexp: "^#?PasswordAuthentication"
-        #     line: "PasswordAuthentication yes"
-        #     backup: yes
-
