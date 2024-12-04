@@ -1,0 +1,10 @@
+---
+- name: Configure EVE-NG
+  hosts: all
+  gather_facts: false
+  become: true
+
+  tasks:
+    - name: Call configure role
+      include_role:
+        name: configure_eveng

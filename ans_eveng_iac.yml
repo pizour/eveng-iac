@@ -1,0 +1,20 @@
+---
+eveng:
+  lab_name: test
+  enabled: true
+  nodes:
+    - name: r1
+      platform: isrv
+      version: 17.02.02
+    - name: r2
+      platform: isrv
+      version: 17.03.03
+    - name: r3
+      platform: isrv
+      version: 17.03.03
+  networks:
+    - a_end:
+      a_end_port:
+      b_end:
+      b_end_port:
+  

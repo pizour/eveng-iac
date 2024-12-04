@@ -69,6 +69,11 @@ jobs:
           pip install pyyaml
           python -m pip show pyyaml
 
+      - name: Install eve-ng
+        run: |
+          pip install eve-ng
+          python -m pip show eve-ng
+
       - name: Install Ansible
         run: |
           sudo apt install -y ansible
@@ -79,4 +84,17 @@ jobs:
           ANSIBLE_HOST_KEY_CHECKING: False
         run: |
           chmod +x ./inventory/dynamic_iac_inventory.py
-          ansible-playbook --inventory ./inventory/dynamic_iac_inventory.py --private-key private_key.pem install-eveng.yml
+          ansible-playbook install-eveng.yml \
+            --inventory ./inventory/dynamic_iac_inventory.py \
+            --private-key private_key.pem
+
+      - name: Configure EVE-NG Ansible playbook
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: False
+          EVENG_ADMIN_PASS: ${{ secrets.EVENG_ADMIN_PASS }}
+        run: |
+          ansible-playbook configure-eveng.yml \
+            --inventory ./inventory/dynamic_iac_inventory.py \
+            --private-key private_key.pem \
+            --extra-vars "@../ans_eveng_iac.yml" \
+            --extra-vars "eveng_admin_pass=$EVENG_ADMIN_PASS"

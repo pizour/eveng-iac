@@ -1,0 +1,15 @@
+---
+- name: Create Directory {{ platform_version }}
+  ansible.builtin.file:
+    state: directory
+    path: "/opt/unetlab/addons/qemu/{{ platform_version }}"
+
+- name: Download {{ platform_version }}
+  get_url:
+    url: "{{ download_links[platform_version] }}"
+    dest: "/opt/unetlab/addons/qemu/{{ platform_version }}/virtioa.qcow2"
+  register: out_image_download
+
+- name: Fix permissions
+  command: /opt/unetlab/wrappers/unl_wrapper -a fixpermissions
+  when: out_image_download is succeeded

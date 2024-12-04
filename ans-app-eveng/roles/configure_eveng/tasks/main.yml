@@ -1,0 +1,24 @@
+---
+- name: Check if platform-version is being already installed in eve-ng
+  eveng_fetch:
+    host: pizour-eveng.eastus.cloudapp.azure.com
+    nodes: "{{ eveng.nodes }}"
+    username: admin
+    password: "{{ eveng_admin_pass }}"
+  register: out_images_presence
+  no_log: true
+  delegate_to: localhost
+
+- name: Check if platform-version is supported
+  assert:
+    that: "{{ download_links[node['platform_version']] is defined }}"
+  loop: "{{ out_images_presence.nodes }}"
+  loop_control:
+    label: "{{ node.platform_version }}"
+    loop_var: node
+
+- name: Install missing images
+  include_tasks: "platforms/{{ platform_version }}/install.yml"
+  loop: "{{ out_images_presence.nodes | selectattr('firmware_present','equalto', false ) | map(attribute='platform_version') | unique }}"
+  loop_control:
+    loop_var: platform_version 
