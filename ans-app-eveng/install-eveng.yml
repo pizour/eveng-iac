@@ -73,8 +73,8 @@
         name: eve-ng
         state: latest
         update_cache: yes
-        debconf:
-          DEBIAN_FRONTEND: noninteractive
+      environment:
+        DEBIAN_FRONTEND: noninteractive
 
     - name: Restart MySQL
       service:
