@@ -6,7 +6,7 @@
 
   tasks:
 
-    - name: Create a new partition on /dev/sdc
+    - name: Create a new partition on /dev/sdc 
       community.general.parted:
         device: /dev/sdc
         number: 1
