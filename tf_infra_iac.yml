@@ -1,5 +1,5 @@
 ---
-infra_enabled: true
+infra_enabled: false
 infra:
   rg: "eveng-rg"
   azure_location: "eastus"
