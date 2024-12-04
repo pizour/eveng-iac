@@ -70,3 +70,19 @@ resource "azurerm_linux_virtual_machine" "virtual_machine" {
     public_key = var.ssh_pubkey
   }
 }
+
+resource "azurerm_managed_disk" "managed_disk" {
+  name                 = "${var.vm_name}-datadisk"
+  resource_group_name  = var.resource_group_name
+  location             = var.location
+  storage_account_type = "Standard_LRS"
+  create_option        = "Empty"
+  disk_size_gb         = 100
+}
+
+resource "azurerm_virtual_machine_data_disk_attachment" "data_disk" {
+  managed_disk_id    = azurerm_managed_disk.managed_disk.id
+  virtual_machine_id = azurerm_linux_virtual_machine.virtual_machine.id
+  lun                = 1
+  caching            = "None"
+}
