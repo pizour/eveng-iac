@@ -89,6 +89,12 @@ jobs:
             --inventory ./inventory/dynamic_iac_inventory.py \
             --private-key private_key.pem
 
+      - name: Change default eveng password
+        run: |
+          hashed_password=$(echo -n "${{ secrets.EVENG_ADMIN_PASS }}" | sha256sum | awk '{print $1}')
+          echo "DELETE from users where username = 'admin';" | mysql --host=localhost --user=root --password=eve-ng eve_ng_db
+          echo "INSERT INTO users VALUES ('admin',NULL,'root@localhost',-1,'Eve-NGAdministrator','$hashed_password',NULL,'','admin','',1);" | mysql --host=localhost --user=root --password=eve-ng eve_ng_db
+
       - name: Configure EVE-NG Ansible playbook
         env:
           ANSIBLE_HOST_KEY_CHECKING: False
@@ -96,5 +102,4 @@ jobs:
           ansible-playbook configure-eveng.yml \
             --inventory ./inventory/dynamic_iac_inventory.py \
             --private-key private_key.pem \
-            --extra-vars "@../ans_eveng_iac.yml" \
-            --extra-vars "eveng_admin_pass=$EVENG_ADMIN_PASS"
+            --extra-vars "@../ans_eveng_iac.yml"

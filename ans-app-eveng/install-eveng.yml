@@ -5,10 +5,10 @@
   become: true
 
   tasks:
-    - name: Call install role
-      include_role:
-        name: install_eveng
+    # - name: Call install role
+    #   include_role:
+    #     name: install_eveng
 
-    - name: Call change eveng password role
-      include_role:
-        name: eveng_change_password
+    # - name: Call change eveng password role
+    #   include_role:
+    #     name: eveng_change_password

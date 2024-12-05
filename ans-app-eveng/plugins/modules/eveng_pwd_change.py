@@ -3,8 +3,8 @@
 # Ansible Imports
 from __future__ import (absolute_import, division, print_function)
 from ansible.module_utils.basic import AnsibleModule
-from module_utils.eveng import eveng_connect
-from module_utils.eveng import change_admin_password
+from ansible.module_utils.eveng import eveng_connect
+from ansible.module_utils.eveng import change_admin_password
 
 __metaclass__ = type
 
@@ -19,7 +19,7 @@ def run_module():
         host=dict(type='str'),
         username=dict(type='str'),
         password=dict(type='str'),
-        new_password=dict(type='str', no_log=True),
+        new_password=dict(type='str')
     )
 
     # seed the result dict in the object
@@ -32,6 +32,9 @@ def run_module():
         message=''
     )
 
+    # seed the ansible_facts dict
+    ansible_facts = dict()
+    
     # the AnsibleModule object will be our abstraction working with Ansible
     # this includes instantiation, a couple of common attr would be the
     # args/params passed to the execution, as well as if the module
@@ -62,17 +65,17 @@ def run_module():
     try:
         change_password = change_admin_password(conn=conn, new_password=new_password)
         if change_password.get('status') != 'success':
-            module.fail_json(msg=f'Password Change failed: {change_password.get('message')}', **result)
+            module.fail_json(msg=f"Password Change failed: {change_password.get('message')}", **result)
 
     except Exception as e:
         module.fail_json(msg=f"Error occurred: {e}", **result)
-        
+      
     result['message'] = 'OK'
 
     conn.logout()
     # in the event of a successful module execution, you will want to
     # simple AnsibleModule.exit_json(), passing the key/value results
-    module.exit_json(**result)
+    module.exit_json(**result, **ansible_facts)
 
 
 def main():
