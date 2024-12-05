@@ -1,19 +1,21 @@
 ---
-- name: Delete the existing admin user from the eve_ng_db
-  mysql_db:
-    name: eve_ng_db
-    state: absent
+- name: Update EVENG password in mysql
+  community.mysql.mysql_query:
+    login_db: eve_ng_db
     login_user: root
     login_password: eve-ng
     login_host: localhost
-    command: "DELETE from users where username = 'admin';"
-
-- name: Insert new admin user into the eve_ng_db with hashed password
-  mysql_db:
-    name: eve_ng_db
-    state: present
-    login_user: root
-    login_password: eve-ng
-    login_host: localhost
-    command: INSERT INTO users VALUES ('admin',NULL,'root@localhost',-1,'Eve-NGAdministrator','{{ eveng_admin_pass | sha256sum }}',NULL,'','admin','',1);
+    query:
+      - DELETE from users where username = 'admin'
+      - INSERT INTO users VALUES ('admin',NULL,'root@localhost',-1,'Eve-NGAdministrator','{{ eveng_admin_pass | sha256sum }}',NULL,'','admin','',1)
   no_log: true
+
+# - name: Insert new admin user into the eve_ng_db with hashed password
+#   mysql_db:
+#     name: eve_ng_db
+#     state: present
+#     login_user: root
+#     login_password: eve-ng
+#     login_host: localhost
+#     command: 
+#   no_log: true
