@@ -1,10 +1,19 @@
 ---
-- name: Replace default password
-  eveng_pwd_change:
-    host: "{{ inventory_hostname }}"
-    username: "{{ eveng_username }}"
-    password: "{{ default_eveng_admin_pass }}"
-    new_password: "{{ eveng_admin_pass }}"
-  register: out_eveng_pwd_change
+- name: Delete the existing admin user from the eve_ng_db
+  mysql_db:
+    name: eve_ng_db
+    state: absent
+    login_user: root
+    login_password: eve-ng
+    login_host: localhost
+    command: "DELETE from users where username = 'admin';"
+
+- name: Insert new admin user into the eve_ng_db with hashed password
+  mysql_db:
+    name: eve_ng_db
+    state: present
+    login_user: root
+    login_password: eve-ng
+    login_host: localhost
+    command: INSERT INTO users VALUES ('admin',NULL,'root@localhost',-1,'Eve-NGAdministrator','{{ eveng_admin_pass | sha256sum }}',NULL,'','admin','',1);
   no_log: true
-  delegate_to: localhost
