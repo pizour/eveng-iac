@@ -8,7 +8,3 @@
     - name: Call configure role
       include_role:
         name: configure_eveng
-
-    - name: Call change eveng password role
-      include_role:
-        name: eveng_change_password

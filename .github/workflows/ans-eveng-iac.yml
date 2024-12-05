@@ -82,6 +82,7 @@ jobs:
       - name: Install EVE-NG Ansible playbook
         env:
           ANSIBLE_HOST_KEY_CHECKING: False
+          ANSIBLE_STDOUT_CALLBACK: default
         run: |
           chmod +x ./inventory/dynamic_iac_inventory.py
           ansible-playbook install-eveng.yml \
@@ -91,7 +92,6 @@ jobs:
       - name: Configure EVE-NG Ansible playbook
         env:
           ANSIBLE_HOST_KEY_CHECKING: False
-          EVENG_ADMIN_PASS: ${{ secrets.EVENG_ADMIN_PASS }}
         run: |
           ansible-playbook configure-eveng.yml \
             --inventory ./inventory/dynamic_iac_inventory.py \
