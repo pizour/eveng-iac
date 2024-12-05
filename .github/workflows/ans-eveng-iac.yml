@@ -92,8 +92,8 @@ jobs:
       - name: Change default eveng password
         run: |
           hashed_password=$(echo -n "${{ secrets.EVENG_ADMIN_PASS }}" | sha256sum | awk '{print $1}')
-          echo "DELETE from users where username = 'admin';" | mysql --host=localhost --user=root --password=eve-ng eve_ng_db
-          echo "INSERT INTO users VALUES ('admin',NULL,'root@localhost',-1,'Eve-NGAdministrator','$hashed_password',NULL,'','admin','',1);" | mysql --host=localhost --user=root --password=eve-ng eve_ng_db
+          echo "DELETE from users where username = 'admin';" | sudo mysql --host=localhost --user=root --password=eve-ng eve_ng_db
+          echo "INSERT INTO users VALUES ('admin',NULL,'root@localhost',-1,'Eve-NGAdministrator','$hashed_password',NULL,'','admin','',1);" | sudo mysql --host=localhost --user=root --password=eve-ng eve_ng_db
 
       - name: Configure EVE-NG Ansible playbook
         env:
