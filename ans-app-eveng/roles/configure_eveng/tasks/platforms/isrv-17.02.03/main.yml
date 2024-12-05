@@ -1,3 +1,0 @@
----
-- name: Forward to Generic ISRv installation
-  include_tasks: "platforms/isrv/install.yml"

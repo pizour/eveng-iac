@@ -1,0 +1,10 @@
+---
+- name: Replace default password
+  eveng_pwd_change:
+    host: "{{ inventory_hostname }}"
+    username: "{{ eveng_username }}"
+    password: "{{ default_eveng_admin_pass }}"
+    new_password: "{{ eveng_admin_pass }}"
+  register: out_eveng_pwd_change
+  no_log: true
+  delegate_to: localhost

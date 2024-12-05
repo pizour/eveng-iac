@@ -1,15 +1,27 @@
 ---
-- name: Create Directory {{ platform_version }}
+- name: Create Directory {{ missing_images['platform_version'] }}
   ansible.builtin.file:
     state: directory
-    path: "/opt/unetlab/addons/qemu/{{ platform_version }}"
+    path: "/opt/unetlab/addons/qemu/{{ missing_images['platform_version'] }}"
+    mode: "750"
 
-- name: Download {{ platform_version }}
-  get_url:
-    url: "{{ download_links[platform_version] }}"
-    dest: "/opt/unetlab/addons/qemu/{{ platform_version }}/virtioa.qcow2"
+- name: Trigger image download {{ missing_images['platform_version'] }}
+  ansible.builtin.get_url:
+    url: "{{ download_links[missing_images['platform_version']] }}"
+    dest: "/opt/unetlab/addons/qemu/{{ missing_images['platform_version'] }}/virtioa.qcow2"
+    mode: "750"
   register: out_image_download
+  async: 600
+  poll: 0
+
+- name: Async check if image is succecfully downloaded
+  async_status:
+    jid: "{{ out_image_download.ansible_job_id }}"
+  register: job_result_download
+  until: job_result_download.finished
+  retries: 60
+  delay: 10
 
 - name: Fix permissions
-  command: /opt/unetlab/wrappers/unl_wrapper -a fixpermissions
+  ansible.builtin.command: /opt/unetlab/wrappers/unl_wrapper -a fixpermissions
   when: out_image_download is succeeded

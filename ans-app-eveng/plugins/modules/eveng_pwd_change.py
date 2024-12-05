@@ -4,6 +4,7 @@
 from __future__ import (absolute_import, division, print_function)
 from ansible.module_utils.basic import AnsibleModule
 from module_utils.eveng import eveng_connect
+from module_utils.eveng import change_admin_password
 
 __metaclass__ = type
 
@@ -18,7 +19,7 @@ def run_module():
         host=dict(type='str'),
         username=dict(type='str'),
         password=dict(type='str'),
-        nodes=dict(type='list'),
+        new_password=dict(type='str', no_log=True),
     )
 
     # seed the result dict in the object
@@ -30,9 +31,6 @@ def run_module():
         changed=False,
         message=''
     )
-
-    # seed the ansible_facts dict
-    ansible_facts = dict()
 
     # the AnsibleModule object will be our abstraction working with Ansible
     # this includes instantiation, a couple of common attr would be the
@@ -56,33 +54,29 @@ def run_module():
     host = module.params['host']
     username = module.params['username']
     password = module.params['password']
-    nodes = module.params['nodes']
+    new_password = module.params['new_password']
 
     # create connection
     conn = eveng_connect(host=host, username=username, password=password)
 
-    for node in nodes:
-        resp = conn.api.node_template_detail(node_type=node['platform'])
-        platform_version = f"{node['platform']}-{node['version']}"
-        node['platform_version'] = platform_version
-        if platform_version in resp['data']['options']['image']['list']:
-            node['firmware_present'] = True
-        else:
-            node['firmware_present'] = False
-        
+    try:
+        change_password = change_admin_password(conn=conn, new_password=new_password)
+        if change_password.get('status') != 'success':
+            module.fail_json(msg=f'Password Change failed: {change_password.get('message')}', **result)
 
-    ansible_facts= dict(nodes=nodes)
+    except Exception as e:
+        module.fail_json(msg=f"Error occurred: {e}", **result)
+        
     result['message'] = 'OK'
 
     conn.logout()
     # in the event of a successful module execution, you will want to
     # simple AnsibleModule.exit_json(), passing the key/value results
-    module.exit_json(**result, **ansible_facts)
+    module.exit_json(**result)
 
 
 def main():
     run_module()
-
 
 if __name__ == '__main__':
     main()

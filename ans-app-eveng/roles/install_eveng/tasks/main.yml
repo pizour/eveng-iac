@@ -1,0 +1,74 @@
+---
+- name: Create a new partition on /dev/sdc
+  community.general.parted:
+    device: /dev/sdc
+    number: 1
+    state: present
+
+- name: Format the partition
+  community.general.filesystem:
+    fstype: ext4
+    dev: /dev/sdc1
+
+- name: Add the new partition to /etc/fstab
+  ansible.builtin.lineinfile:
+    path: /etc/fstab
+    line: "/dev/sdc1    /opt    ext4    defaults,discard    0 0"
+
+- name: Mount the partition
+  ansible.posix.mount:
+    path: /opt
+    src: /dev/sdc1
+    fstype: ext4
+    state: mounted
+
+- name: Download and add EVE-NG repository key
+  ansible.builtin.get_url:
+    url: http://www.eve-ng.net/focal/eczema@ecze.com.gpg.key
+    dest: /tmp/eve-ng.key
+    mode: "750"
+  register: eve_key
+
+- name: Add the EVE-NG repository key
+  ansible.builtin.command: apt-key add /tmp/eve-ng.key
+  when: eve_key is succeeded
+
+- name: Add EVE-NG repository to apt sources
+  ansible.builtin.copy:
+    dest: /etc/apt/sources.list.d/eve-ng.list
+    content: "deb [arch=amd64] http://www.eve-ng.net/jammy jammy main"
+    mode: "750"
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Trigger EVE-NG installation
+  ansible.builtin.apt:
+    name: eve-ng
+    state: latest
+    update_cache: true
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  register: out_eveng_install
+  async: 600
+  poll: 0
+
+- name: Async check if EVE-NG is succecfully installed
+  async_status:
+    jid: "{{ out_eveng_install.ansible_job_id }}"
+  register: job_result_eveng_install
+  until: job_result_eveng_install.finished
+  retries: 60
+  delay: 10
+
+- name: Restart MySQL
+  ansible.builtin.service:
+    name: mysql
+    state: restarted
+
+- name: Add KVM options for nested virtualization
+  ansible.builtin.copy:
+    dest: /etc/modprobe.d/qemu-system-x86.conf
+    content: "options kvm_intel nested=1 vmentry_l1d_flush=never"
+    mode: "750"
