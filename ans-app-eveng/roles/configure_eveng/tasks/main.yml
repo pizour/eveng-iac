@@ -3,6 +3,8 @@
   pip:
     name: eve-ng
     state: present
+    virtualenv: /opt/pipx/venvs/ansible-core
+    virtualenv_command: "{{ ansible_python_interpreter }} -m venv"
   delegate_to: localhost
 
 - name: Check if platform-version is being already installed in eve-ng
