@@ -115,4 +115,5 @@ jobs:
           ansible-playbook configure-eveng.yml \
             --inventory ./inventory/dynamic_iac_inventory.py \
             --private-key private_key.pem \
-            --extra-vars "@../ans_eveng_iac.yml"
+            --extra-vars "@../ans_eveng_iac.yml" \
+            --extra-vars "eveng_admin_pass='${{ secrets.EVENG_ADMIN_PASS }}'"

@@ -3,7 +3,7 @@
 # Ansible Imports
 from __future__ import (absolute_import, division, print_function)
 from ansible.module_utils.basic import AnsibleModule
-from module_utils.eveng import eveng_connect
+from ansible.module_utils.eveng import eveng_connect
 
 __metaclass__ = type
 
