@@ -1,0 +1,10 @@
+---
+- name: Enable HTTPS EVE-NG password
+  hosts: all
+  gather_facts: false
+  become: true
+
+  tasks:
+    - name: Call enable https role
+      include_role:
+        name: eveng_enable_https

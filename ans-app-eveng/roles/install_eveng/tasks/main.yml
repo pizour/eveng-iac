@@ -55,7 +55,7 @@
   poll: 0
 
 - name: Async check if EVE-NG is succecfully installed
-  async_status:
+  ansible.builtin.async_status:
     jid: "{{ out_eveng_install.ansible_job_id }}"
   register: job_result_eveng_install
   until: job_result_eveng_install.finished

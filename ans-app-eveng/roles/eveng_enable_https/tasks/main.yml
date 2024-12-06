@@ -1,0 +1,29 @@
+---
+- name: Install Nginx
+  ansible.builtin.apt:
+    name: nginx
+    state: present
+    update_cache: true
+
+- name: Create directory for SSL certificates
+  ansible.builtin.file:
+    path: /etc/nginx/ssl
+    state: directory
+    mode: '0755'
+
+- name: Generate a self-signed SSL certificate
+  command: "{{ eveng_enable_https_generate_cert }}"
+
+- name: Configure Nginx for HTTPS
+  ansible.builtin.copy:
+    dest: /etc/nginx/sites-available/default
+    mode: '0755'
+    content: "{{ eveng_enable_https_nginx_default_forward_config }}"
+
+- name: Test Nginx configuration
+  ansible.builtin.command: nginx -t
+
+- name: Reload Nginx
+  ansible.builtin.service:
+    name: nginx
+    state: restarted
