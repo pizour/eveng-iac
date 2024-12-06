@@ -1,11 +1,4 @@
 ---
-- name: Install evengsdk via pip to runner
-  pip:
-    name: eve-ng
-    state: present
-    #virtualenv: /opt/pipx/venvs/ansible-core
-  delegate_to: localhost
-
 - name: Check if platform-version is being already installed in eve-ng
   eveng_fetch:
     host: "{{ inventory_hostname }}"
@@ -13,7 +6,7 @@
     password: "{{ eveng_admin_pass }}"
     nodes: "{{ eveng.nodes }}"
   register: out_images_presence
-  #no_log: true
+  no_log: true
   delegate_to: localhost
 
 - name: Check if platform-version is supported
