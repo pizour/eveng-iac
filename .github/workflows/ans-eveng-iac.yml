@@ -79,24 +79,24 @@ jobs:
           sudo apt install -y ansible
           ansible --version
 
-      - name: Install EVE-NG Ansible playbook
-        env:
-          ANSIBLE_HOST_KEY_CHECKING: False
-          ANSIBLE_STDOUT_CALLBACK: default
-        run: |
-          chmod +x ./inventory/dynamic_iac_inventory.py
-          ansible-playbook install-eveng.yml \
-            --inventory ./inventory/dynamic_iac_inventory.py \
-            --private-key private_key.pem
+      # - name: Install EVE-NG Ansible playbook
+      #   env:
+      #     ANSIBLE_HOST_KEY_CHECKING: False
+      #     ANSIBLE_STDOUT_CALLBACK: default
+      #   run: |
+      #     chmod +x ./inventory/dynamic_iac_inventory.py
+      #     ansible-playbook install-eveng.yml \
+      #       --inventory ./inventory/dynamic_iac_inventory.py \
+      #       --private-key private_key.pem
 
-      - name: Enable https EVE-NG Ansible playbook
-        env:
-          ANSIBLE_HOST_KEY_CHECKING: False
-          ANSIBLE_STDOUT_CALLBACK: default
-        run: |
-          ansible-playbook enable-https-eveng.yml \
-            --inventory ./inventory/dynamic_iac_inventory.py \
-            --private-key private_key.pem
+      # - name: Enable https EVE-NG Ansible playbook
+      #   env:
+      #     ANSIBLE_HOST_KEY_CHECKING: False
+      #     ANSIBLE_STDOUT_CALLBACK: default
+      #   run: |
+      #     ansible-playbook enable-https-eveng.yml \
+      #       --inventory ./inventory/dynamic_iac_inventory.py \
+      #       --private-key private_key.pem
 
       - name: Change default EVE-NG password Ansible playbook
         env:
