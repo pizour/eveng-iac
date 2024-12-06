@@ -79,14 +79,14 @@ jobs:
           chmod +x ./inventory/dynamic_iac_inventory.py
           ansible-playbook install-eveng.yml \
             --inventory ./inventory/dynamic_iac_inventory.py \
-            --private-key private_key.pem
+            --private-key private_key.pem \
             --extra-vars "eveng_admin_pass='${{ secrets.EVENG_ADMIN_PASS }}'"
 
       - name: Enable https EVE-NG Ansible playbook
         run: |
           ansible-playbook enable-https-eveng.yml \
             --inventory ./inventory/dynamic_iac_inventory.py \
-            --private-key private_key.pem
+            --private-key private_key.pem \
             --extra-vars "eveng_admin_pass='${{ secrets.EVENG_ADMIN_PASS }}'"
 
       - name: Change default EVE-NG password Ansible playbook

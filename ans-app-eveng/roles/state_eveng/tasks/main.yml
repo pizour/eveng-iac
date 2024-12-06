@@ -5,5 +5,5 @@
     username: "{{ eveng_username }}"
     password: "{{ eveng_admin_pass }}"
   register: out_eveng_state
-  #no_log: true
+  no_log: true
   delegate_to: localhost
