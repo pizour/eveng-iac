@@ -1,4 +1,17 @@
 ---
+- name: Install required packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - python3-pip
+    - python3-mysql.connector
+
+- name: Install PyMySQL via pip
+  pip:
+    name: PyMySQL
+    state: present
+
 - name: Update EVENG password in mysql
   community.mysql.mysql_query:
     login_db: eve_ng_db
