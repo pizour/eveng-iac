@@ -3,8 +3,19 @@
   hosts: all
   gather_facts: false
   become: true
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
 
   tasks:
+    - name: Call runner requirements role
+      include_role:
+        name: install_runner_prerequisities
+
+    - name: Call fetch state role
+      include_role:
+        name: state_eveng
+
     - name: Call install role
       include_role:
         name: install_eveng
+      when: not out_eveng_state.https_reachability and not out_eveng_state.http_reachability

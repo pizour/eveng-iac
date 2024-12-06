@@ -1,0 +1,6 @@
+---
+- name: Install evengsdk via pip
+  pip:
+    name: eve-ng
+    state: present
+  delegate_to: localhost

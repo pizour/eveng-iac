@@ -1,0 +1,9 @@
+---
+- name: Check eve-ng state
+  eveng_state:
+    host: "{{ inventory_hostname }}"
+    username: "{{ eveng_username }}"
+    password: "{{ eveng_admin_pass }}"
+  register: out_eveng_state
+  no_log: true
+  delegate_to: localhost

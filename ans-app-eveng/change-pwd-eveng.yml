@@ -3,8 +3,15 @@
   hosts: all
   gather_facts: false
   become: true
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
 
   tasks:
+    - name: Call fetch state role
+      include_role:
+        name: state_eveng
+
     - name: Call change eveng password role
       include_role:
         name: eveng_change_password
+      when: out_eveng_state.https_reachability and out_eveng_state.https_default_password
