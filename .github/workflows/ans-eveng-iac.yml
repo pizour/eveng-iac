@@ -69,10 +69,10 @@ jobs:
           pip install pyyaml
           python -m pip show pyyaml
 
-      # - name: Install eve-ng
-      #   run: |
-      #     pip install eve-ng
-      #     python -m pip show eve-ng
+      - name: Install eve-ng
+        run: |
+          pip install eve-ng
+          python -m pip show eve-ng
 
       - name: Install Ansible
         run: |
