@@ -6,7 +6,7 @@
     password: "{{ eveng_admin_pass }}"
     nodes: "{{ eveng.nodes }}"
   register: out_images_presence
-  no_log: true
+  #no_log: true
   delegate_to: localhost
 
 - name: Check if platform-version is supported
