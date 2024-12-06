@@ -5,6 +5,6 @@
   become: true
 
   tasks:
-    # - name: Call install role
-    #   include_role:
-    #     name: install_eveng
+    - name: Call install role
+      include_role:
+        name: install_eveng
