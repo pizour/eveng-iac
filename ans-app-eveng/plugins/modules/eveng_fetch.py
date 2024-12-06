@@ -59,7 +59,7 @@ def run_module():
     nodes = module.params['nodes']
 
     # create connection
-    conn = eveng_connect(host=host, username=username, password=password)
+    conn = eveng_connect(host=host, username=username, password=password, protocol='https')
 
     for node in nodes:
         resp = conn.api.node_template_detail(node_type=node['platform'])
