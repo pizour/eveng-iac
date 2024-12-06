@@ -3,6 +3,7 @@
   pip:
     name: eve-ng
     state: present
+  delegate_to: localhost
 
 - name: Check if platform-version is being already installed in eve-ng
   eveng_fetch:
