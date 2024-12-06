@@ -1,8 +1,8 @@
 ---
-# - name: Install evengsdk via pip
-#   pip:
-#     name: eve-ng
-#     state: present
+- name: Install evengsdk via pip
+  pip:
+    name: eve-ng
+    state: present
 
 - name: Check if platform-version is being already installed in eve-ng
   eveng_fetch:
