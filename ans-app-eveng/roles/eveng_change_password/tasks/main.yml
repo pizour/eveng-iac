@@ -20,6 +20,5 @@
     login_unix_socket: /var/run/mysqld/mysqld.sock
     query:
       - DELETE from users where username = 'admin'
-      # - INSERT INTO users VALUES ('admin',NULL,'root@localhost',-1,'Eve-NGAdministrator','{{ eveng_admin_pass | hash('sha256') }}',NULL,'','admin','',1)
-      - INSERT INTO users VALUES ('admin',NULL,'root@localhost',-1,'Eve-NGAdministrator','85262adf74518bbb70c7cb94cd6159d91669e5a81edf1efebd543eadbda9fa2b',NULL,'','admin','',1)
-  #no_log: true
+      - INSERT INTO users VALUES ('admin',NULL,'root@localhost',-1,'Eve-NGAdministrator','{{ eveng_admin_pass | hash('sha256') }}',NULL,'','admin','',1)
+  no_log: true
