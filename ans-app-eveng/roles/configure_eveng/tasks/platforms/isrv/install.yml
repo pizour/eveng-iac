@@ -14,13 +14,13 @@
   async: 600
   poll: 0
 
-- name: Async check if image is succecfully downloaded
-  async_status:
-    jid: "{{ out_image_download.ansible_job_id }}"
-  register: job_result_download
-  until: job_result_download.finished
-  retries: 60
-  delay: 10
+# - name: Async check if image is succecfully downloaded
+#   async_status:
+#     jid: "{{ out_image_download.ansible_job_id }}"
+#   register: job_result_download
+#   until: job_result_download.finished
+#   retries: 60
+#   delay: 10
 
 - name: Fix permissions
   ansible.builtin.command: /opt/unetlab/wrappers/unl_wrapper -a fixpermissions
