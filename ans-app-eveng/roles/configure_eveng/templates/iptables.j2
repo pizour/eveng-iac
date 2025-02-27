@@ -1,0 +1,12 @@
+*nat
+:PREROUTING ACCEPT [0:0]
+:POSTROUTING ACCEPT [0:0]
+
+{% for node in eveng.nodes %}
+  {% for service in node.services %}
+-A PREROUTING -p tcp --dport {{ service.external_port }} -j DNAT --to-destination {{ node.mgmt_ip }}:{{ service.internal_port }}
+  {% endfor %}
+{% endfor %}
+-A POSTROUTING -o eth0 -j MASQUERADE
+
+COMMIT

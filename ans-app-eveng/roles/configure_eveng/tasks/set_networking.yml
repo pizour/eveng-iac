@@ -1,0 +1,66 @@
+---
+- name: Update apt package cache
+  apt:
+    update_cache: true
+  changed_when: false
+
+- name: Enable Permanent IP Forwarding
+  ansible.builtin.sysctl:
+    name: net.ipv4.ip_forward
+    value: "1"
+    state: present
+    reload: true
+    sysctl_file: /etc/sysctl.conf
+
+- name: Install bridge utilities
+  package:
+    name: bridge-utils
+    state: present
+
+- name: Ensure `pnet0` bridge exists
+  command: brctl addbr pnet0
+  args:
+    creates: /sys/class/net/pnet0
+
+# - name: Bring up `pnet0`
+#   command: ip link set pnet0 up
+
+- name: Ensure Netplan configuration exists for `pnet0`
+  copy:
+    dest: /etc/netplan/50-pnet0.yaml
+    content: |
+      network:
+        version: 2
+        renderer: networkd
+        bridges:
+          pnet0:
+            dhcp4: no
+            addresses:
+              - {{ eveng.pnet0_ip }}/24
+            parameters:
+              stp: false
+              forward-delay: 0
+    mode: '0644'
+  notify: Apply Netplan
+
+- name: Install iptables-persistent
+  package:
+    name: iptables-persistent
+    state: present
+
+- name: Generate iptables rules directly in /etc/iptables.rules
+  template:
+    src: iptables.j2
+    dest: /etc/iptables.rules
+    mode: 0644
+
+- name: Apply iptables rules immediately
+  shell: iptables-restore < /etc/iptables.rules
+  changed_when: false
+
+- name: Enable netfilter-persistent service
+  systemd:
+    name: netfilter-persistent
+    enabled: yes
+    state: started
+
