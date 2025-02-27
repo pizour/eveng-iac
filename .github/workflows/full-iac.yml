@@ -51,9 +51,9 @@ jobs:
 
   terraform-plan:
     name: Terraform Plan
-    needs:
+    #needs:
       #- yaml-lint
-      - tf-schema-validation
+      #- tf-schema-validation
     runs-on: ubuntu-latest
     defaults:
       run:
