@@ -1,5 +1,5 @@
 ---
-infra_enabled: false
+infra_enabled: true
 infra:
   rg: "eveng-rg"
   azure_location: "eastus"
@@ -29,4 +29,4 @@ infra:
         - name: "NETCONF"
           port: "830-840"
           priority: 1015
-      ssh_pubkey: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCxLuv4UDBswDfGtY0BWV30WksakqwKBCIMEa6v5LwPyaA3pvwoy0j6nfqEbEWrh4xcH5U9rsEr+FUj8dPGc/BBvfvcgO41dCqrFXa/nIZ/7oJXJIJ3aJeT26V1Co4DOASXuZJKAWnHA8h6TXiD4FMiTG9ov8MPi53Q+UxM792cElgltpBRRKYchb7iLPi8qhpwrqYnuGzQTA/2dWzlFfWmP+YIAxVubMScCBh0iNzNTOfqZN2sZu4KJKBR7Xfn436fuPiVshrJaMpT9T8vOlLolIgglNxf3Q5tePP26LM67iz/t53w7VvRwBxjm9NbCbAbM44CQ0lYKfpNumr9uNP1ORVTfNRDQ94uIp3zkoMkVfhG6tnuxm8WiIFGmDYzoSLsiYnSra9BouNByQgz+YL5BbfIvUKOt0kAX/YmHxKQls79oGiYYrd7cpuDwQe618RQsyHax8BJqoL0G7KVUqxCX7JSmUfHwPvgTuPyny/2mmOd6bBZXBJaWK1CqP9LAec="
+      ssh_pubkey: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDI6CXQ/MxCvQJ4EHx6dEfpvY2Eil+Ps+V7ZQLna2ICSPL9GnbXoTeyJ5hAXpiqgcmGGJjY+vdeH7SriJK3LbP0dKCJzHlxddASO0GBFidORmCiXiFDnxmFOryCWFongXf4PFKXT0o+qnEMoas/KMLFjPY5GopBvRfKp18p0aUdwvG4TbY87EDLXZuwNgdlyG//N0H9Wstth3Ybjl0kg8pDyGza04a/gvW1Fg5H4qYHO2ci3ru/pliaE9NsUtQog+c5M5P7gKSgbXKemOf0BPLXC/aAY/h/Z5ZDWAK1yhilw50WcNSGZcNcf5Y7pZR1mRi9Jglf9g7BMvJD3iFhG7FltDaTIELCqvoy7FGF1VPJE1m8wM1fxmVd098QxgWu6OF/bu8fLkBOlj7d7KwU5keeiDR0PYudfIH7p4pY1/0KuKWToTSoZ6VjWi/nKgNxot6bFpJhYDEfwI+pXAR2t7883yZHojbPzXEEpJ0p8r3Emm1bPu8hnvitICTNgQMfdUc="
