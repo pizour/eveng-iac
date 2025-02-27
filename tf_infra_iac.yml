@@ -23,7 +23,7 @@ infra:
         - name: "HTTP"
           port: "80"
           priority: 1005
-        - name: "HTTPS"
+        - name: "HTTPs"
           port: "443"
           priority: 1010
         - name: "NETCONF"
