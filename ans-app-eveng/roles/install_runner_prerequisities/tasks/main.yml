@@ -3,4 +3,5 @@
   pip:
     name: eve-ng
     state: present
+    extra_args: --ignore-installed
   delegate_to: localhost
