@@ -1,6 +1,6 @@
 ---
 eveng:
-  lab_name: dtl-lab
+  lab_name: dtl
   enabled: true
   nodes:
     # - name: r1
