@@ -6,10 +6,9 @@ on:
     paths:
       - 'tf-infra-azure/**'
       - 'tf_infra_iac.yml'
-      - '.github/workflows/tf-infra-iac.yml'
       - 'ans-app-eveng/**'
       - 'ans_eveng_iac.yml'
-      - '.github/workflows/ans-eveng-iac.yml'
+      - '.github/workflows/full-iac.yml'
   # pull_request:
   #   paths:
   #     - 'ans-app-eveng/**'
