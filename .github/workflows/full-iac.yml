@@ -146,6 +146,7 @@ jobs:
   ansible-install-eveng:
     runs-on: ubuntu-latest
     # needs: ansible-lint
+    needs: terraform-apply
     defaults:
       run:
         working-directory: "ans-app-eveng"
