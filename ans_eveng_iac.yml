@@ -1,6 +1,6 @@
 ---
 eveng:
-  lab_name: dtl-test
+  lab_name: dtl
   enabled: true
   nodes:
     - name: r3
