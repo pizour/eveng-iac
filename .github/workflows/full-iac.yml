@@ -1,0 +1,195 @@
+---
+name: Full E2E pipeline
+
+on:
+  push:
+  #   paths:
+  #     - 'tf-infra-azure/**'
+  #     - 'tf_infra_iac.yml'
+  #     - '.github/workflows/tf-infra-iac.yml'
+  # pull_request:
+  #   paths:
+  #     - 'ans-app-eveng/**'
+  #     - 'ans_eveng_iac.yml'
+  #     - '.github/workflows/tf-infra-iac.yml'
+
+jobs:
+
+  # yaml-lint:
+  #   name: Lint YAML Files
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v3
+
+  #     - name: Install yamllint
+  #       run: sudo apt-get install -y yamllint
+
+  #     - name: Run yamllint
+  #       run: yamllint .
+
+  # tf-schema-validation:
+  #   name: Validate Terraform IaC YAML schema
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v3
+
+  #     - name: Install npm
+  #       run: sudo apt-get install -y npm
+
+  #     - name: Install ajv-cli
+  #       run: sudo npm install -g ajv-cli
+
+  #     - name: Validate TF IaC YAML
+  #       run: ajv validate -s json_schema/tf_infra_schema.json -d tf_infra_iac.yml
+
+  terraform-plan:
+    name: Terraform Plan
+    needs:
+      #- yaml-lint
+      - tf-schema-validation
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "tf-infra-azure"
+
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.9.8
+
+      - name: Install yq
+        run: |
+          sudo apt install -y wget
+          wget https://github.com/mikefarah/yq/releases/download/v4.35.1/yq_linux_amd64 -O /usr/local/bin/yq
+          chmod +x /usr/local/bin/yq
+
+      - name: Read YAML File
+        id: read_yaml
+        run: echo "INFRA_ENABLED=$(yq '.infra_enabled' ../tf_infra_iac.yml)" >> $GITHUB_ENV
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Format
+        run: terraform fmt -check
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: |
+          DESTROY_FLAG=""
+          if [ "${{ env.INFRA_ENABLED }}" = "false" ]; then
+            DESTROY_FLAG="-destroy"
+          fi
+          terraform plan $DESTROY_FLAG -var="iac_path=../tf_infra_iac.yml" -out=${{ github.run_id }}.tfplan
+
+      - name: Upload tfplan as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.run_id }}
+          path: ./tf-infra-azure/${{ github.run_id }}.tfplan
+
+  terraform-apply:
+    name: Terraform Apply
+    needs: terraform-plan
+    environment: production
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "tf-infra-azure"
+
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.9.8
+
+      - name: Download tfplan from artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ github.run_id }}
+          path: ./tf-infra-azure
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Apply
+        run: terraform apply ${{ github.run_id }}.tfplan
+
+
+  ansible-install-eveng:
+    runs-on: ubuntu-latest
+    # needs: ansible-lint
+    defaults:
+      run:
+        working-directory: "ans-app-eveng"
+    steps:
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Set up SSH
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
+          chmod 600 private_key.pem
+
+      - name: Install PyYAML
+        run: |
+          pip install pyyaml
+          python -m pip show pyyaml
+
+      - name: Install Ansible
+        run: |
+          sudo apt install -y ansible
+          ansible --version
+
+      - name: Install EVE-NG Ansible playbook
+        run: |
+          chmod +x ./inventory/dynamic_iac_inventory.py
+          ansible-playbook install-eveng.yml \
+            --inventory ./inventory/dynamic_iac_inventory.py \
+            --private-key private_key.pem \
+            --extra-vars "eveng_admin_pass='${{ secrets.EVENG_ADMIN_PASS }}'"
+
+      - name: Enable https EVE-NG Ansible playbook
+        run: |
+          ansible-playbook enable-https-eveng.yml \
+            --inventory ./inventory/dynamic_iac_inventory.py \
+            --private-key private_key.pem \
+            --extra-vars "eveng_admin_pass='${{ secrets.EVENG_ADMIN_PASS }}'"
+
+      - name: Change default EVE-NG password Ansible playbook
+        run: |
+          ansible-playbook change-pwd-eveng.yml \
+            --inventory ./inventory/dynamic_iac_inventory.py \
+            --private-key private_key.pem \
+            --extra-vars "eveng_admin_pass='${{ secrets.EVENG_ADMIN_PASS }}'"

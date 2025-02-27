@@ -32,6 +32,7 @@ module "compute" {
   unique_vm_alias     = each.value.unique_vm_alias
   resource_group_name = local.iac["infra"]["rg"]
   location            = local.iac["infra"]["azure_location"]
+  open_ports = each.value.open_ports
   depends_on = [
     module.networking
   ]

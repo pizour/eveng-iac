@@ -1,5 +1,5 @@
 ---
-infra_enabled: false
+infra_enabled: true
 infra:
   rg: "eveng-rg"
   azure_location: "eastus"
@@ -16,4 +16,17 @@ infra:
       subnet_name: "eveng-snet"
       vm_size: "Standard_D4ds_v4"
       ssh_username: eveng
+      open_ports:
+        - name: "SSH"
+          port: "22"
+          priority: 1001
+        - name: "HTTP"
+          port: "80"
+          priority: 1005
+        - name: "HTTPS"
+          port: "443"
+          priority: 1010
+        - name: "NETCONF"
+          port: "830-840"
+          priority: 1015
       ssh_pubkey: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCxLuv4UDBswDfGtY0BWV30WksakqwKBCIMEa6v5LwPyaA3pvwoy0j6nfqEbEWrh4xcH5U9rsEr+FUj8dPGc/BBvfvcgO41dCqrFXa/nIZ/7oJXJIJ3aJeT26V1Co4DOASXuZJKAWnHA8h6TXiD4FMiTG9ov8MPi53Q+UxM792cElgltpBRRKYchb7iLPi8qhpwrqYnuGzQTA/2dWzlFfWmP+YIAxVubMScCBh0iNzNTOfqZN2sZu4KJKBR7Xfn436fuPiVshrJaMpT9T8vOlLolIgglNxf3Q5tePP26LM67iz/t53w7VvRwBxjm9NbCbAbM44CQ0lYKfpNumr9uNP1ORVTfNRDQ94uIp3zkoMkVfhG6tnuxm8WiIFGmDYzoSLsiYnSra9BouNByQgz+YL5BbfIvUKOt0kAX/YmHxKQls79oGiYYrd7cpuDwQe618RQsyHax8BJqoL0G7KVUqxCX7JSmUfHwPvgTuPyny/2mmOd6bBZXBJaWK1CqP9LAec="

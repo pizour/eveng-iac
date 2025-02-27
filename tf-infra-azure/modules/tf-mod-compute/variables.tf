@@ -42,3 +42,12 @@ variable "unique_vm_alias" {
   type        = string
   description = "Unique DNS to access VM"
 }
+
+variable "open_ports" {
+  type = list(object({
+    name = string
+    port  = string
+    priority = number
+  }))
+  description = "Inbound openings"
+}
