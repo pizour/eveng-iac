@@ -3,10 +3,13 @@ name: Full E2E pipeline
 
 on:
   push:
-  #   paths:
-  #     - 'tf-infra-azure/**'
-  #     - 'tf_infra_iac.yml'
-  #     - '.github/workflows/tf-infra-iac.yml'
+    paths:
+      - 'tf-infra-azure/**'
+      - 'tf_infra_iac.yml'
+      - '.github/workflows/tf-infra-iac.yml'
+      - 'ans-app-eveng/**'
+      - 'ans_eveng_iac.yml'
+      - '.github/workflows/ans-eveng-iac.yml'
   # pull_request:
   #   paths:
   #     - 'ans-app-eveng/**'
