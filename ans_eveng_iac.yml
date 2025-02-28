@@ -1,12 +1,12 @@
 ---
 eveng:
-  lab_name: dtl
+  lab_name: dtl1
   enabled: true
   pnet0_ip: 10.0.0.200
   nodes:
     - name: r3
       platform: isrv
-      version: 17.03.03
+      version: 17.01.01
       mgmt_ip: 10.0.0.201
       services:
         - name: netconf
