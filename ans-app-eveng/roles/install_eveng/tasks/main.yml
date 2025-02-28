@@ -59,7 +59,7 @@
     jid: "{{ out_eveng_install.ansible_job_id }}"
   register: job_result_eveng_install
   until: job_result_eveng_install.finished
-  retries: 60
+  retries: 120
   delay: 10
 
 - name: Restart MySQL
