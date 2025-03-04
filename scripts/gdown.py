@@ -14,9 +14,3 @@ destination = "."
 output = f'{destination}/download.tgz'
 gdown.download(url, output, quiet=False)
 
-# Open and extract
-# with tarfile.open(output, "r:gz") as tar:
-#     tar.extractall(destination)
-
-if os.path.exists(output):
-    os.remove(output)
