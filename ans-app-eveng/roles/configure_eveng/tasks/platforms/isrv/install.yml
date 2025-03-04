@@ -1,15 +1,15 @@
 ---
-- name: Create Directory {{ missing_images['platform_version'] }}
+- name: Create Directory {{ missing_image }}
   ansible.builtin.file:
     state: directory
-    path: "/opt/unetlab/addons/qemu/{{ missing_images['platform_version'] }}"
+    path: "/opt/unetlab/addons/qemu/{{ missing_image }}"
     mode: "750"
 
-- name: Trigger image download {{ missing_images['platform_version'] }}
+- name: Trigger image download {{ missing_image }}
   image_download:
-    url: "{{ download_links[missing_images['platform_version']] }}"
-    destination: "/opt/unetlab/addons/qemu/{{ missing_images['platform_version'] }}/virtioa.qcow2"
-  register: out
+    url: "{{ download_links[missing_image] }}"
+    destination: "/opt/unetlab/addons/qemu"
+  register: out_image_download
 
 # - name: Trigger image download {{ missing_images['platform_version'] }}
 #   ansible.builtin.get_url:

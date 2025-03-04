@@ -3,8 +3,9 @@
 # Ansible Imports
 from __future__ import (absolute_import, division, print_function)
 from ansible.module_utils.basic import AnsibleModule
-import requests
-from urllib.parse import urlparse, parse_qs
+import gdown
+import tarfile
+import os
 
 
 __metaclass__ = type
@@ -51,36 +52,15 @@ def run_module():
 
     def download_image(url, destination):
 
-        session = requests.Session()
+        output = f'{destination}/download.tgz'
+        gdown.download(url, output, quiet=False)
 
-        # Parse URL
-        parsed_url = urlparse(url)
-        query_params = parse_qs(parsed_url.query)
+        # Open and extract
+        with tarfile.open(output, "r:gz") as tar:
+            tar.extractall(destination)
 
-        # Extract Base URL and File ID
-        base_url = f"{parsed_url.scheme}://{parsed_url.netloc}{parsed_url.path}"
-        file_id = query_params.get("id", [""])[0]
-       
-        # Step 1: Get confirmation token
-        response = session.get(base_url, params={'id': file_id}, stream=True)
-        token = None
-
-        for key, value in response.cookies.items():
-            if key.startswith('download_warning'):
-                token = value
-
-        # Step 2: Download the file with confirmation token (if needed)
-        params = {'id': file_id}
-        if token:
-            params['confirm'] = token
-
-        response = session.get(base_url, params=params, stream=True)
-
-        # Step 3: Save file in chunks
-        with open(destination, "wb") as file:
-            for chunk in response.iter_content(32768):  # 32 KB chunks
-                if chunk:
-                    file.write(chunk)
+        if os.path.exists(output):
+            os.remove(output)
     
         return True
 

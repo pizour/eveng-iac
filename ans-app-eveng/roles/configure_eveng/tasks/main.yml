@@ -1,4 +1,10 @@
 ---
+- name: Install gdown using pip
+  pip:
+    name: gdown
+    state: present
+    executable: pip3
+
 - name: Check if platform-version is being already installed in eve-ng
   eveng_fetch:
     host: "{{ inventory_hostname }}"
@@ -18,11 +24,10 @@
     loop_var: node
 
 - name: Install missing images
-  ansible.builtin.include_tasks: "platforms/{{ missing_images['platform'] }}/install.yml"
-  loop: "{{ out_images_presence.nodes | selectattr('firmware_present', 'equalto', false) | unique }}"
+  ansible.builtin.include_tasks: "platforms/{{ missing_image.split('-')[0] }}/install.yml"
+  loop: "{{ out_images_presence.nodes | selectattr('firmware_present', 'equalto', false) | map(attribute='platform_version') | unique }}"
   loop_control:
-    loop_var: missing_images
-
+    loop_var: missing_image
 
 - name: Set networking
   ansible.builtin.include_tasks: "set_networking.yml"
