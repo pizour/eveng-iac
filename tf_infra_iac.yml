@@ -29,4 +29,7 @@ infra:
         - name: "NETCONF"
           port: "830-840"
           priority: 1015
+        - name: "node1-ssh"
+          port: "2222"
+          priority: 1020
       ssh_pubkey: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDI6CXQ/MxCvQJ4EHx6dEfpvY2Eil+Ps+V7ZQLna2ICSPL9GnbXoTeyJ5hAXpiqgcmGGJjY+vdeH7SriJK3LbP0dKCJzHlxddASO0GBFidORmCiXiFDnxmFOryCWFongXf4PFKXT0o+qnEMoas/KMLFjPY5GopBvRfKp18p0aUdwvG4TbY87EDLXZuwNgdlyG//N0H9Wstth3Ybjl0kg8pDyGza04a/gvW1Fg5H4qYHO2ci3ru/pliaE9NsUtQog+c5M5P7gKSgbXKemOf0BPLXC/aAY/h/Z5ZDWAK1yhilw50WcNSGZcNcf5Y7pZR1mRi9Jglf9g7BMvJD3iFhG7FltDaTIELCqvoy7FGF1VPJE1m8wM1fxmVd098QxgWu6OF/bu8fLkBOlj7d7KwU5keeiDR0PYudfIH7p4pY1/0KuKWToTSoZ6VjWi/nKgNxot6bFpJhYDEfwI+pXAR2t7883yZHojbPzXEEpJ0p8r3Emm1bPu8hnvitICTNgQMfdUc="
