@@ -1,4 +1,4 @@
-import gdown
+import scripts.download_via_gdown as download_via_gdown
 import tarfile
 import os
 import argparse
@@ -12,5 +12,5 @@ url = args.url
 destination = "."
 
 output = f'{destination}/download.tgz'
-gdown.download(url, output, quiet=False)
+download_via_gdown.download(url, output, quiet=False)
 

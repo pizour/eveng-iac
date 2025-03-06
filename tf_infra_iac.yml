@@ -1,5 +1,5 @@
 ---
-infra_enabled: false
+infra_enabled: true
 infra:
   rg: "eveng-rg"
   azure_location: "eastus"
@@ -14,7 +14,7 @@ infra:
       unique_vm_alias: "pizour-eveng"
       vnet_name: "eveng-vnet"
       subnet_name: "eveng-snet"
-      vm_size: "Standard_D4ds_v4"
+      vm_size: "Standard_D8ds_v4"
       ssh_username: eveng
       open_ports:
         - name: "SSH"

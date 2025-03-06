@@ -32,7 +32,7 @@
 
 - name: Copy tooling gdown script
   ansible.builtin.copy:
-    src: ../scripts/gdown.py
+    src: ../scripts/download_via_gdown.py
     dest: /opt/unetlab/addons/qemu/
     mode: '0755'
 
