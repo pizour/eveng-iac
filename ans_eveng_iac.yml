@@ -1,6 +1,6 @@
 ---
 eveng:
-  lab_name: dtl
+  lab_name: dtl1
   enabled: true
   pnet0_ip: 10.0.0.200
   nodes:
